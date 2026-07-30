@@ -41,6 +41,16 @@
 ### 1 2 3
 
 A: 132
+current = arr0
+last = arr2
+arr0.next = arr1
+arr1.next = arr2
+
+=>
+current.next = arr2
+
+
+
 |        | curr | next |     |
 | ------ | ---- | ---- | --- |
 | arr[0] | 1    | 2    | (3) |

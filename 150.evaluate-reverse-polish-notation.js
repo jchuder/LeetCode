@@ -10,26 +10,29 @@
  * @return {number}
  */
 var evalRPN = function (tokens) {
-  let stack = [];
-  let ans;
-
-  if (tokens.length === 1) return +tokens[0];
-
-  tokens.forEach((v, i) => {
-    //  Save number into stack
-    if (isNumber(v)) return stack.push(+v);
-
-    //  Handle symbol
-    let secondNum = stack.pop();
-    let firstNum = stack.pop();
-
-    //  It's important to add () to secondNum because of the negative will cause the formula cal error
-    ans = calculateAndRoundDown(`${firstNum}${v}(${secondNum})`);
-    stack.push(ans);
-  });
-
-  return ans;
+  const numStack = [];
+  const operators = {
+    "+": (a, b) => {
+      console.log("+");
+      return a + b;
+    },
+    "-": (a, b) => a - b,
+    "*": (a, b) => a * b,
+    "/": (a, b) => Math.trunc(a / b),
+  };
+  for (t of tokens) {
+    if (t in operators) {
+      const back = numStack.pop();
+      const front = numStack.pop();
+      numStack.push(operators[t](front, back));
+    } else {
+      numStack.push(Number(t));
+    }
+  }
+  return numStack.pop();
 };
+
+evalRPN(["4", "-2", "/", "2", "-3", "+", "-"]);
 
 function isNumber(string) {
   return isNaN(+string) ? false : true;
